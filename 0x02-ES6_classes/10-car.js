@@ -29,7 +29,15 @@ export default class Car {
     this._color = color;
   }
 
-  cloneCar() {
-    return new Car(this._brand, this._motor, this._color);
+  static get [Symbol.species]() {
+    return this.prototype.constructor;
   }
+
+  cloneCar() {
+    return new (this.constructor[Symbol.species])();
+  }
+
+  // cloneCar() {
+  //   return new Car(this._brand, this._motor, this._color);
+  // }
 }
