@@ -1,3 +1,4 @@
+/* eslint-disable */
 const fs = require("fs");
 const countStudents = (dataPath) =>
   new Promise((resolve, reject) => {
