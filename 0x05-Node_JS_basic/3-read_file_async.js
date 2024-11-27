@@ -1,6 +1,6 @@
-import { readFile } from 'fs';
+const fs = require('fs');
 const countStudents = (dataPath) => new Promise((resolve, reject) => {
-  readFile(dataPath, 'utf-8', (err, data) => {
+  fs.readFile(dataPath, 'utf-8', (err, data) => {
     if (err) {
       reject(new Error('Cannot load the database'));
     }
@@ -13,7 +13,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
       const dbFieldNames = fileLines[0].split(',');
       const studentPropNames = dbFieldNames
         .slice(0, dbFieldNames.length - 1);
-
       for (const line of fileLines.slice(1)) {
         const studentRecord = line.split(',');
         const studentPropValues = studentRecord
@@ -38,5 +37,4 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
     }
   });
 });
-
-export default countStudents;
+module.exports = countStudents;
