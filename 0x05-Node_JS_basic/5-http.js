@@ -4,6 +4,7 @@ const PORT = 1245;
 const HOST = 'localhost';
 const app = http.createServer();
 const DB_FILE = process.argv.length > 2 ? process.argv[2] : '';
+
 /**
  * Counts the students in a CSV data file.
  * @param {String} dataPath The path to the CSV data file.
@@ -26,6 +27,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           0,
           dbFieldNames.length - 1,
         );
+
         for (const line of fileLines.slice(1)) {
           const studentRecord = line.split(',');
           const studentPropValues = studentRecord.slice(
@@ -42,6 +44,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           ]);
           studentGroups[field].push(Object.fromEntries(studentEntries));
         }
+
         const totalStudents = Object.values(studentGroups).reduce(
           (pre, cur) => (pre || []).length + cur.length,
         );
@@ -58,6 +61,7 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
     });
   }
 });
+
 const SERVER_ROUTE_HANDLERS = [
   {
     route: '/',
@@ -74,6 +78,7 @@ const SERVER_ROUTE_HANDLERS = [
     route: '/students',
     handler(_, res) {
       const responseParts = ['This is the list of our students'];
+
       countStudents(DB_FILE)
         .then((report) => {
           responseParts.push(report);
@@ -94,6 +99,7 @@ const SERVER_ROUTE_HANDLERS = [
     },
   },
 ];
+
 app.on('request', (req, res) => {
   for (const routeHandler of SERVER_ROUTE_HANDLERS) {
     if (routeHandler.route === req.url) {
@@ -102,6 +108,7 @@ app.on('request', (req, res) => {
     }
   }
 });
+
 app.listen(PORT, HOST, () => {
   process.stdout.write(`Server listening at -> http://${HOST}:${PORT}\n`);
 });
