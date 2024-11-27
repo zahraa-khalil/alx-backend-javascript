@@ -1,6 +1,6 @@
-const fs = require('fs');
+import { readFile } from 'fs';
 const countStudents = (dataPath) => new Promise((resolve, reject) => {
-  fs.readFile(dataPath, 'utf-8', (err, data) => {
+  readFile(dataPath, 'utf-8', (err, data) => {
     if (err) {
       reject(new Error('Cannot load the database'));
     }
@@ -26,7 +26,6 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
           .map((propName, idx) => [propName, studentPropValues[idx]]);
         studentGroups[field].push(Object.fromEntries(studentEntries));
       }
-
       const totalStudents = Object
         .values(studentGroups)
         .reduce((pre, cur) => (pre || []).length + cur.length);
@@ -40,4 +39,4 @@ const countStudents = (dataPath) => new Promise((resolve, reject) => {
   });
 });
 
-module.exports = countStudents;
+export default countStudents;
